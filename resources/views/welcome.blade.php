@@ -1,4 +1,4 @@
-{{-- <x-guest-layout>
+<x-guest-layout>
     Hello World!
 </x-guest-layout>
 
@@ -8,16 +8,19 @@
             <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
         @else
             <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
-
-            @if (Route::has('register'))
+            {{-- --- --- Sistema de registro
+                Elimino el sistema de registro para impedir que visitantes se registren
+                en el sitio.
+            --}}
+            {{-- @if (Route::has('register'))
                 <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-            @endif
+            @endif --}}
         @endauth
     </div>
-@endif --}}
+@endif
 
 
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -156,4 +159,4 @@
             </div>
         </div>
     </body>
-</html>
+</html> --}}
