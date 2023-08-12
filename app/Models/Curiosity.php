@@ -10,6 +10,8 @@ class Curiosity extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['text', 'weapon_id'];
+
     public function weapon(){
         return $this->belongsTo(Weapon::class);
     }

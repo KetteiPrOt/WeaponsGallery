@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('curiosities', function (Blueprint $table) {
+        Schema::create('main_images', function (Blueprint $table) {
             $table->id();
-            $table->string('text', 100);
+            $table->string('image_url');
 
-            $table->foreignId('weapon_id')->constrained(
+            $table->foreignId('weapon_id')->unique()->constrained(
                 table: 'weapons',
                 column: 'id',
-                indexName: 'curiosity_weapon'
+                indexName: 'main_image_weapon'
             )->onUpdate('cascade')->onDelete('cascade');
-
+            
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('curiosities');
+        Schema::dropIfExists('main_images');
     }
 };

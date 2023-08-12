@@ -17,7 +17,7 @@ class CuriosityFactory extends Factory
     public function definition(): array
     {
         return [
-            'curiosity' => fake()->sentence(),
+            'text' => fake()->sentence(),
             'weapon_id' => fake()->numberBetween(1, 15)
         ];
     }

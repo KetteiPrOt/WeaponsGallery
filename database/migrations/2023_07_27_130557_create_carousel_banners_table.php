@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('carousel_banners', function (Blueprint $table) {
             $table->id();
-            $table->binary('image');
+            $table->string('image_url');
             $table->timestamps();
         });
     }

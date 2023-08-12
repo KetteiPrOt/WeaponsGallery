@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WeaponController;
-use App\Models\Weapon;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,12 +14,23 @@ use App\Models\Weapon;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+/*
+*/
+Route::get('/', function () {
+    return view('welcome');
+});
 
-Route::get('/', [WeaponController::class, 'index']);
+Route::controller(WeaponController::class)->group(function(){
+    Route::get('/armas', 'redirect')->name('weapons.root');
+    Route::get('/armas/{type}', 'index')->name('weapons.index');
+    Route::get('/armas/{type}/crear', 'create')->name('weapons.create');
+    Route::post('/armas', 'store')->name('weapons.store');
+    Route::get('/armas/{weapon}/editar', 'edit')->name('weapons.edit');
+    Route::put('/armas/{weapon}', 'update')->name('weapons.update');
+    Route::delete('/armas/{weapon}', 'destroy')->name('weapons.destroy');
+});
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -8,6 +8,8 @@ use App\Models\Weapon;
 use App\Models\Type;
 use App\Models\Curiosity;
 use App\Models\Image;
+use App\Models\MainImage;
+use App\Models\SecondaryImage;
 use App\Models\CarouselBanner;
 
 class DatabaseSeeder extends Seeder
@@ -29,12 +31,10 @@ class DatabaseSeeder extends Seeder
         foreach($names as $name){
             Weapon::factory()->count(3)
                 ->has(
-                    Image::factory()->count(4)->sequence(
-                        ['is_banner' => false],
-                        ['is_banner' => false],
-                        ['is_banner' => false],
-                        ['is_banner' => true]
-                    )
+                    MainImage::factory()->count(1)
+                )
+                ->has(
+                    SecondaryImage::factory()->count(3)
                 )
                 ->has(
                     Curiosity::factory()->count(3)
@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
             
             /* --- Tablas `carousel_banners` --- */
             $carrouselBanner = new CarouselBanner();
-            $carrouselBanner->image = fake()->image();
+            $carrouselBanner->image_url = fake()->imageUrl();
             $carrouselBanner->save();
         }
     }

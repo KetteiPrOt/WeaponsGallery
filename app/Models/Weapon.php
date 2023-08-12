@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Type;
 use App\Models\Curiosity;
-use App\Models\Image;
+use App\Models\MainImage;
+use App\Models\SecondaryImage;
 
 class Weapon extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'description', 'type_id'];
 
     public function type(){
         return $this->belongsTo(Type::class);
@@ -20,57 +23,102 @@ class Weapon extends Model
         return $this->hasMany(Curiosity::class);
     }
 
-    public function images(){
-        return $this->hasMany(Image::class);
+    public function mainImage(){
+        return $this->hasOne(MainImage::class);
     }
 
-    public static function obtainWeapons(string $type){
-        /*
-        $registers = [
-            [
-                'name' => '...'
-                'description' => '...'
-                'curiosities' => [ '...' , '...' , '...' ]
-                'images' => [ 'path_1', 'path_2', 'path_3' ]
-            ],
-            [
-                ...
-            ],
-            ...
-        ];
-        */
-        // use App\Models\Type;
-        $registers = [];
+    public function secondaryImages(){
+        return $this->hasMany(SecondaryImage::class);
+    }
 
-        $name = Type::where('name', $type)->first();
-        $weapons = $name->weapons;
-        for($i = 0; $i < count($weapons); $i++){
-            $weapon = $weapons[$i];
+    public static function allWeapons(string $type){
+        // Obtiene todas las armas del mismo tipo
+        $type = Type::where('name', $type)->first();
+        $weapons = $type->weapons;
 
-            $register = [];
-            // name
-            $register['name'] = $weapon->name;
-            // description
-            $register['description'] = $weapon->description;
-            // curiosities
-            $curiosities = $weapon->curiosities;
-            $array = [];
-            for($j = 0; $j < count($curiosities); $j++){
-                $array[] = $curiosities[$j]->curiosity;
-            }
-            $register['curiosities'] = $array;
-            // images
-            $images = $weapon->images;
-            $array = [];
-            for($j = 0; $j < count($images); $j++){
-                $array[] = $images[$j]->image;
-            }
-            $register['images'] = $array;
+        // Obtiene el tipo, las curiosidades, y las imagenes relacionadas a cada arma
+        $weapons->transform(function($weapon, $key){
+            $weapon->type;
+            $weapon->curiosities;
+            $weapon->mainImage;
+            $weapon->secondaryImages;
+            return $weapon;
+        });
 
-            // Save register
-            $registers[] = $register;
+        // Retorna las armas
+        return $weapons;
+    }
+
+    public static function saveWeapon($weapon){
+        // Obtener id del tipo y el id de la nueva arma
+        $type_id = Type::where('name', $weapon->get('type'))->value('id');
+        $weapon_id = Weapon::create([
+            'name' => $weapon->get('name'),
+            'description' => $weapon->get('description'),
+            'type_id' => $type_id
+        ])->id;
+
+        // Crear curiosidades relacionadas al arma
+        foreach($weapon->get('curiosities') as $curiosity){
+            Curiosity::create([
+                'text' => $curiosity,
+                'weapon_id' => $weapon_id
+            ]);
         }
 
-        return $registers;
+        // Crear imagenes relacionadas al arma    
+        MainImage::create([
+            'image_url' => $weapon->get('main_image'),
+            'weapon_id' => $weapon_id
+        ]);
+
+        foreach($weapon->get('secondary_images') as $image){
+            SecondaryImage::create([
+                'image_url' => $image,
+                'weapon_id' => $weapon_id,
+            ]);
+        }
+    }
+
+    public static function findRelations(Weapon $weapon){
+        // Obtener el tipo, las curiosidades, e imagenes relacionadas al arma
+        $weapon->type;
+        $weapon->curiosities;
+        $weapon->mainImage;
+        $weapon->secondaryImages;
+
+        // Retornar el arma
+        return $weapon;
+    }
+
+    public static function updateWeapon($data, $weapon){
+        // Actualizar los datos del arma
+        $weapon->name = $data->get('name');
+        $weapon->description = $data->get('description');
+        $weapon->save();
+
+        // Actualizar las curiosidades
+        $curiosities = $weapon->curiosities;
+        foreach($curiosities as $key => $curiosity){
+            $curiosity->text = $data->get('curiosities')[$key];
+            $curiosity->save();
+        }
+
+        // Actualizar imagenes
+        $mainImage = $weapon->mainImage;
+        $mainImage->image_url = $data->get('main_image');
+        $mainImage->save();
+
+
+        $secondaryImages = $data->get('secondary_images');
+        foreach($weapon->secondaryImages as $key => $image){
+            $image->image_url = $secondaryImages[$key];
+            $image->save();
+        }
+
+        // Actualizar tipo
+        $type = $weapon->type;
+        $type->name = $data->get('type');
+        $type->save();
     }
 }

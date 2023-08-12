@@ -10,6 +10,8 @@ class Image extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['image_url', 'weapon_id'];
+
     public function weapon(){
         return $this->belongsTo(Weapon::class);
     }

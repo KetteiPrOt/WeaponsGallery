@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('secondary_images', function (Blueprint $table) {
             $table->id();
-            $table->boolean('is_banner')->unsigned();
-            $table->binary('image');
+            $table->string('image_url');
 
             $table->foreignId('weapon_id')->constrained(
                 table: 'weapons',
                 column: 'id',
-                indexName: 'image_weapon'
+                indexName: 'secondary_image_weapon'
             )->onUpdate('cascade')->onDelete('cascade');
 
             $table->timestamps();
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('secondary_images');
     }
 };
