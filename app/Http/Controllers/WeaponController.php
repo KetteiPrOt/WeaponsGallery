@@ -14,6 +14,7 @@ class WeaponController extends Controller
 {
     private function validateType(string $type): bool
     {
+        // new branch
         $exist = Type::where('name', $type)->exists();
         return $exist;
     }
