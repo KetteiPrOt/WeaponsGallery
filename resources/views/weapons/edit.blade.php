@@ -77,6 +77,7 @@
         <input
             type="file"
             name="main_image"
+            class="mb-3"
         > <br>
 
         @error('main_image')
@@ -89,19 +90,18 @@
 
         {{-- Imagenes Secundarias --}}
         <p>Imagenes Secundarias</p>
-        @for($i = 0; $i < 3; $i++)
+        @foreach($weapon->secondaryImages as $key => $image)
             <input
                 type="file"
-                name="secondary_images[]"
+                name="secondary_images[{{$key}}]"
                 class="mb-3"
             > <br>
-        @endfor
 
-        @error("secondary_images.*")
-            <p
-                class="text-red-400"
-            >{{$message}}</p>
-        @enderror
+            <img
+                class="w-32 h-32 mb-3 inline-block"
+                src="{{asset($image->image_url)}}"
+            > <br>
+        @endforeach
 
         @error("secondary_images")
             <p
@@ -109,9 +109,11 @@
             >{{$message}}</p>
         @enderror
 
-        @foreach ($weapon->secondaryImages as $image)
-            <img class="w-32 h-32 inline-block" src="{{asset($image->image_url)}}">
-        @endforeach
+        @error("secondary_images.*")
+            <p
+                class="text-red-400"
+            >{{$message}}</p>
+        @enderror
 
         {{-- Input Type --}}
         <p>Tipo de arma</p>

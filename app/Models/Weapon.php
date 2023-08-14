@@ -105,15 +105,20 @@ class Weapon extends Model
         }
 
         // Actualizar imagenes
-        $mainImage = $weapon->mainImage;
-        $mainImage->image_url = $data->get('main_image');
-        $mainImage->save();
+        if($data->get('main_image')){
+            $mainImage = $weapon->mainImage;
+            $mainImage->image_url = $data->get('main_image');
+            $mainImage->save();
+        }
 
+        if($data->get('secondary_images')){
+            $secondaryImages = $weapon->secondaryImages;
 
-        $secondaryImages = $data->get('secondary_images');
-        foreach($weapon->secondaryImages as $key => $image){
-            $image->image_url = $secondaryImages[$key];
-            $image->save();
+            foreach($data->get('secondary_images') as $key => $image){
+                $secondaryImage = $secondaryImages->get($key);
+                $secondaryImage->image_url = $image;
+                $secondaryImage->save();
+            }
         }
 
         // Actualizar tipo

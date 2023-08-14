@@ -7,6 +7,7 @@ use App\Models\Weapon;
 use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreWeaponRequest;
+use App\Http\Requests\UpdateWeaponRequest;
 use Illuminate\Http\UploadedFile;
 
 class WeaponController extends Controller
@@ -110,32 +111,35 @@ class WeaponController extends Controller
         Storage::disk('local')->delete($path);
     }
 
-    public function update(StoreWeaponRequest $request, Weapon $weapon){
+    public function update(UpdateWeaponRequest $request, Weapon $weapon){
         // No olvidar validar la autenticacion en el form request 
         // para evitar que nos metan datos sin haberse logeado!
         /* --- Obtener los datos validados --- */
         $images = $request->all('main_image', 'secondary_images');
         $data = $request->collect();
 
-        /* --- Eliminar las imagenes antiguas del disco local --- */
-        $mainImage = $weapon->mainImage;
-        $this->deleteImage($mainImage->image_url);
-
-        $secondaryImages = $weapon->secondaryImages;
-        foreach($secondaryImages as $image){
-            $this->deleteImage($image->image_url);
+        /* --- Eliminar las imagenes antiguas del disco local y obtener las nuevas --- */
+        if($images['main_image']){
+            // Eliminar la imagen principal del disco local
+            $mainImage = $weapon->mainImage;
+            $this->deleteImage($mainImage->image_url);
+            // Almacena la nueva imagen en el disco local
+            $imageUrl = $this->saveImage($images['main_image']);
+            $data->put('main_image', $imageUrl); // 'main_image' => storage/uZcgmofCinzVMcjVUC7VDB4ap4kdDbEbX3m083PA.jpg
         }
 
-        /* --- Almacenar nuevas imagenes en el disco local --- */
-        $imageUrl = $this->saveImage($images['main_image']);
-        $data->put('main_image', $imageUrl); // 'main_image' => storage/uZcgmofCinzVMcjVUC7VDB4ap4kdDbEbX3m083PA.jpg
+        if($images['secondary_images']){
+            $secondaryImagesUrls = [];
+            $secondaryImages = $weapon->secondaryImages;
 
-        $secondaryImages = [];
-        foreach($images['secondary_images'] as $image){
-            $imageUrl = $this->saveImage($image);
-            $secondaryImages[] = $imageUrl;
+            foreach($images['secondary_images'] as $key => $image){
+                $this->deleteImage($secondaryImages->get($key)->image_url);
+                $imageUrl = $this->saveImage($image);
+                $secondaryImagesUrls[$key] = $imageUrl;
+
+                $data->put('secondary_images', $secondaryImagesUrls);  // $secondaryImages = [ "url...", "url...", "url..."];
+            }
         }
-        $data->put('secondary_images', $secondaryImages);  // $secondaryImages = [ "url...", "url...", "url..."];
 
         /* --- Actualizar datos en la Base de Datos --- */
         Weapon::updateWeapon($data, $weapon);
