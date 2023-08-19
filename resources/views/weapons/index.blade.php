@@ -25,35 +25,37 @@
         <ul
             class="list-inside"
         >
-            {{-- Link de Edicion --}}
-            <li>
-                <a
-                    class="
-                        text-blue-400 underline
-                    "
-                    href="{{route('weapons.edit', $weapon->id)}}"
-                >
-                    Editar Arma
-                </a>
-            </li>
-            {{-- Boton de Eliminacion --}}
-            <li>
-                <form action="{{route('weapons.destroy', $weapon->id)}}" method="post">
-
-                    @csrf
-
-                    @method('delete')
-
-                    <button
+            @auth
+                {{-- Link de Edicion --}}
+                <li>
+                    <a
                         class="
-                            text-red-400 underline
+                            text-blue-400 underline
                         "
-                        type="submit"
+                        href="{{route('weapons.edit', $weapon->id)}}"
                     >
-                        Eliminar Arma
-                    </button>
-                </form>
-            </li>
+                        Editar Arma
+                    </a>
+                </li>
+                {{-- Boton de Eliminacion --}}
+                <li>
+                    <form action="{{route('weapons.destroy', $weapon->id)}}" method="post">
+
+                        @csrf
+
+                        @method('delete')
+
+                        <button
+                            class="
+                                text-red-400 underline
+                            "
+                            type="submit"
+                        >
+                            Eliminar Arma
+                        </button>
+                    </form>
+                </li>
+            @endauth
             {{-- Nombre y descripcion --}}
             <li>
                 <span class="font-black text-red">{{$weapon->name}}: </span>

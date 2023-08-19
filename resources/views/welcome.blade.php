@@ -1,5 +1,11 @@
 <x-guest-layout>
-    Hello World!
+    Bienvenido!
+    <a 
+        class="text-indigo-600 underline"
+        href="{{route('weapons.root')}}"
+    >
+        Ver las armas
+    </a>
 </x-guest-layout>
 
 @if (Route::has('login'))
@@ -12,9 +18,9 @@
                 Elimino el sistema de registro para impedir que visitantes se registren
                 en el sitio.
             --}}
-            {{-- @if (Route::has('register'))
+            @if (Route::has('register'))
                 <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-            @endif --}}
+            @endif
         @endauth
     </div>
 @endif

@@ -23,13 +23,15 @@ Route::get('/', function () {
 Route::controller(WeaponController::class)->group(function(){
     Route::get('/armas', 'redirect')->name('weapons.root');
     Route::get('/armas/{type}', 'index')->name('weapons.index');
+});
+
+Route::middleware('auth')->controller(WeaponController::class)->group(function () {
     Route::get('/armas/{type}/crear', 'create')->name('weapons.create');
     Route::post('/armas', 'store')->name('weapons.store');
     Route::get('/armas/{weapon}/editar', 'edit')->name('weapons.edit');
     Route::put('/armas/{weapon}', 'update')->name('weapons.update');
     Route::delete('/armas/{weapon}', 'destroy')->name('weapons.destroy');
 });
-
 
 
 Route::get('/dashboard', function () {
