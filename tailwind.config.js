@@ -7,6 +7,8 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        // add tailwind elements plugin library
+        './node_modules/tw-elements/dist/js/**/*.js'
     ],
 
     theme: {
@@ -16,6 +18,5 @@ export default {
             },
         },
     },
-
-    plugins: [forms],
+    plugins: [forms, /* add tailwind elements plugin */ require("tw-elements/dist/plugin.cjs")],
 };

@@ -14,14 +14,20 @@ use App\Http\Controllers\WeaponController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-/*
-*/
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
 
 Route::controller(WeaponController::class)->group(function(){
-    Route::get('/armas', 'redirect')->name('weapons.root');
+    Route::get('/armas', 'root')->name('weapons.root');
     Route::get('/armas/{type}', 'index')->name('weapons.index');
 });
 
@@ -33,8 +39,7 @@ Route::middleware('auth')->controller(WeaponController::class)->group(function (
     Route::delete('/armas/{weapon}', 'destroy')->name('weapons.destroy');
 });
 
-
-Route::get('/dashboard', function () {
+Route::get('/panel', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

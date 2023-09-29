@@ -12,11 +12,7 @@ class UpdateWeaponRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(Auth::check()){
-            return true;
-        } else {
-            return false;
-        }
+        return Auth::check();
     }
 
     /**
@@ -26,56 +22,33 @@ class UpdateWeaponRequest extends FormRequest
      */
     public function rules(): array
     {
-        // Caracteres permitidos en el nombre
-        $nameChars = ['(\\w)', '(-)', '( )'];
-        $nameRegex = '/^(' . implode('|', $nameChars) . ')+$/';
-        // $nameRegex = "/^((\w)|(-)|( ))+$/";
+        // Characters allowed in the name: '\w', '-', ' '
+        $nameRegex = "/^((\w)|(-)|( ))+$/";
 
-        // Caracteres permitidos en las descripciones
+        // Characters allowed in descriptions
         $textChars = ['(\\w)', '(-)', '( )', '(,)', '(\\.)', '(\\!)', '(\\?)', '(\\*)', '(\\))', '(\\()'];
         $textRegex = '/^(' . implode('|', $textChars) . ')+$/';
         // $textRegex = "/^((\w)|(-)|( )|(,)|(\.)|(\!)|(\?))+$/";
 
-        // Reglas para las curiosidades
-        $curiosityRules = ['required', 'string', 'min:10', 'max:100', "regex:$textRegex"];
+        // Rules for images
+        $imageRules = ['image', 'max:5500', 'dimensions:ratio=3/1'];
 
-        // Reglas para las imagenes
-        $imageRules = ['image', 'max:5500', 'dimensions:ratio=16/9'];
-
-        // Reglas Finales
+        // All rules array
         $rules = [];
 
-        $rules['name'] = [
-            'required',
-            'string',
-            'min:5',
-            'max:40',
-            "regex:$nameRegex"
-        ];
+        $rules['name'] = ['required', 'string', 'min:5', 'max:40', "regex:$nameRegex"];
         
-        $rules['description'] = [
-            'required',
-            'string',
-            'min:20',
-            'max:500',
-            "regex:$textRegex"
-        ];
+        $rules['description'] = ['required', 'string', 'min:20', 'max:500', "regex:$textRegex"];
 
         $rules["curiosities"] = "required|array:0,1,2|min:3|max:3";
-        $rules["curiosities.*"] = $curiosityRules;
+        $rules["curiosities.*"] = ['required', 'string', 'min:10', 'max:100', "regex:$textRegex"];
 
         $rules['main_image'] = $imageRules;
 
         $rules["secondary_images"] = "array:0,1,2|max:3";
         $rules["secondary_images.*"] = $imageRules;
 
-        $rules['type'] = [
-            'required',
-            'string',
-            'min:2',
-            'max:20',
-            'exists:App\Models\Type,name'
-        ];
+        $rules['type'] = ['required', 'string', 'min:2', 'max:20', 'exists:App\Models\Type,name'];
 
         return $rules;
     }
@@ -83,37 +56,33 @@ class UpdateWeaponRequest extends FormRequest
     public function attributes(): array
     {
         $attributes = [
-            'name' => 'Nombre',
-            'description' => 'Description'
+            'name' => 'nombre',
+            'description' => 'description'
         ];
         
-        $attributes["curiosities"] = "Curiosidades";
-        $attributes["curiosities.*"] = "Curiosidad #:position";
+        $attributes["curiosities"] = "curiosidades";
+        $attributes["curiosities.*"] = "curiosidad #:position";
 
-        $attributes['main_image'] = 'Imagen Principal';
+        $attributes['main_image'] = 'imagen principal';
 
-        $attributes["secondary_images"] = "Imagenes Secundarias";
-        $attributes["secondary_images.*"] = "Imagen Secundaria #:position";
+        $attributes["secondary_images"] = "imagenes secundarias";
+        $attributes["secondary_images.*"] = "imagen secundaria #:position";
 
-        $attributes['type'] = 'Tipo';
+        $attributes['type'] = 'tipo';
 
         return $attributes;
     }
 
     public function messages(): array
     {
-        // $nameRegex = "/^((\w)|(-)|( ))+$/";
-        // $descriptionRegex = "/^((\w)|(-)|( )|(,)|(\.)|(\!)|(\?))+$/";
         $textMessage = 'Solo se permiten los simbolos _-,.!?()';
 
-        $messages = [
+        return [
             'name.regex' => 'Solo se permiten los simbolos _  y -',
             'description.regex' => $textMessage,
             "curiosities.*.regex" => $textMessage . " en la curiosidad #:position",
             'main_image.dimensions' => 'Las dimensiones de la imagen deben estar en relacion 16:9.',
             'secondary_images.*.dimensions' => 'Las dimensiones de la imagen secundaria #:position deben estar en relacion 16:9.'
         ];
-
-        return $messages;
     }
 }

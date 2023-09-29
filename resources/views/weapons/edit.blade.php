@@ -11,7 +11,7 @@
 </head>
 <body class="mx-3">
     
-    @include('layouts.temp-navigation')
+    @include('layouts.navigation')
 
     <form action="{{route('weapons.update', $weapon->id)}}" method="post" enctype="multipart/form-data">
         

@@ -32,25 +32,16 @@ class Weapon extends Model
     }
 
     public static function allWeapons(string $type){
-        // Obtiene todas las armas del mismo tipo
+        // Obtain all weapons of the same type
         $type = Type::where('name', $type)->first();
         $weapons = $type->weapons;
-
-        // Obtiene el tipo, las curiosidades, y las imagenes relacionadas a cada arma
-        $weapons->transform(function($weapon, $key){
-            $weapon->type;
-            $weapon->curiosities;
-            $weapon->mainImage;
-            $weapon->secondaryImages;
-            return $weapon;
-        });
-
-        // Retorna las armas
+        
+        // Return weapons
         return $weapons;
     }
 
     public static function saveWeapon($weapon){
-        // Obtener id del tipo y el id de la nueva arma
+        // Obtain weapon's id, and type's id
         $type_id = Type::where('name', $weapon->get('type'))->value('id');
         $weapon_id = Weapon::create([
             'name' => $weapon->get('name'),
@@ -58,7 +49,7 @@ class Weapon extends Model
             'type_id' => $type_id
         ])->id;
 
-        // Crear curiosidades relacionadas al arma
+        // Create curiosities that belongs to weapon
         foreach($weapon->get('curiosities') as $curiosity){
             Curiosity::create([
                 'text' => $curiosity,
@@ -66,7 +57,7 @@ class Weapon extends Model
             ]);
         }
 
-        // Crear imagenes relacionadas al arma    
+        // Create images that belongs to weapon
         MainImage::create([
             'image_url' => $weapon->get('main_image'),
             'weapon_id' => $weapon_id
@@ -80,31 +71,20 @@ class Weapon extends Model
         }
     }
 
-    public static function findRelations(Weapon $weapon){
-        // Obtener el tipo, las curiosidades, e imagenes relacionadas al arma
-        $weapon->type;
-        $weapon->curiosities;
-        $weapon->mainImage;
-        $weapon->secondaryImages;
-
-        // Retornar el arma
-        return $weapon;
-    }
-
     public static function updateWeapon($data, $weapon){
-        // Actualizar los datos del arma
+        // Update weapon data
         $weapon->name = $data->get('name');
         $weapon->description = $data->get('description');
         $weapon->save();
 
-        // Actualizar las curiosidades
+        // Update curiosities
         $curiosities = $weapon->curiosities;
         foreach($curiosities as $key => $curiosity){
             $curiosity->text = $data->get('curiosities')[$key];
             $curiosity->save();
         }
 
-        // Actualizar imagenes
+        // Update images
         if($data->get('main_image')){
             $mainImage = $weapon->mainImage;
             $mainImage->image_url = $data->get('main_image');
@@ -121,7 +101,7 @@ class Weapon extends Model
             }
         }
 
-        // Actualizar tipo
+        // Update type
         $type = $weapon->type;
         $type->name = $data->get('type');
         $type->save();

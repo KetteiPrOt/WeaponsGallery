@@ -1,0 +1,153 @@
+{{-- Modal --}}
+<div class="px-2 rounded border border-b-0 border-neutral-200">
+    <div class="space-y-2">
+
+        {{-- Button trigger --}}
+        <button
+            type="button"
+            class="rounded"
+            data-te-toggle="modal"
+            data-te-target="#modal{{$key}}"
+        >
+            {{-- Weapon Main Image --}}
+            <img
+                class="w-full"
+                src="{{asset($weapon->mainImage->image_url)}}" alt="Imagen de {{$weapon->name}}"
+            >
+        </button>
+
+        {{-- Modal Window --}}
+        <div
+            data-te-modal-init
+            class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+            id="modal{{$key}}"
+            tabindex="-1"
+            aria-labelledby="modal{{$key}}Title"
+            aria-modal="true"
+            role="dialog"
+        >
+            <div
+                data-te-modal-dialog-ref
+                class="pointer-events-none relative flex min-h-[calc(100%-1rem)] w-auto translate-y-[-50px] items-center opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:min-h-[calc(100%-3.5rem)] min-[576px]:max-w-[500px]"
+            >
+                <div
+                    class="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600"
+                >
+
+                    {{-- Modal body --}}
+                    <div class="relative p-4">
+
+                        {{-- Carousel --}}
+                        <div
+                            id="modalCarousel{{$key}}"
+                            class="relative pt-3"
+                            data-te-carousel-init
+                            data-te-ride="carousel"
+                        >
+
+                            {{-- Carousel indicators --}}
+                            <div
+                                class="absolute bottom-0 left-0 right-0 z-[2] mx-[15%] mb-4 flex list-none justify-center p-0"
+                                data-te-carousel-indicators
+                            >
+                                @for($i = 0; $i < $weapon->secondaryImages->count(); $i++)
+                                    <button
+                                        type="button"
+                                        data-te-target="#modalCarousel{{$key}}"
+                                        data-te-slide-to="{{$i}}"
+                                        data-te-carousel-active
+                                        class="mx-[3px] box-content h-[3px] w-[30px] flex-initial cursor-pointer border-0 border-y-[10px] border-solid border-transparent bg-black bg-clip-padding p-0 -indent-[999px] opacity-50 transition-opacity duration-[600ms] ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-reduce:transition-none"
+                                        aria-current="true"
+                                        aria-label="Slide {{$i + 1}}"
+                                    ></button>
+                                @endfor
+                            </div>
+
+                            {{-- Carousel items --}}
+                            <div
+                                class="relative w-full overflow-hidden after:clear-both after:block after:content-['']"
+                            >
+                                @foreach ($weapon->secondaryImages as $secondaryImageKey => $image)
+                                    <div
+                                        class="
+                                            {{!($secondaryImageKey == 0) ? 'hidden' : ''}}
+                                            relative float-left -mr-[100%] w-full 
+                                            transition-transform duration-[600ms] ease-in-out 
+                                            motion-reduce:transition-none
+                                        "
+                                        data-te-carousel-item
+                                        {{!($secondaryImageKey == 0) ? '' : 'data-te-carousel-active'}}
+                                    >
+                                        <img
+                                            src="{{asset($image->image_url)}}"
+                                            class="block w-full"
+                                            alt="Imagen secundaria de {{$weapon->name}}" 
+                                        />
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            {{-- Carousel controls - prev item --}}
+                            <button
+                                class="absolute bottom-0 left-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-black opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-black hover:no-underline hover:opacity-90 hover:outline-none focus:text-black focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
+                                type="button"
+                                data-te-target="#modalCarousel{{$key}}"
+                                data-te-slide="prev"
+                            >
+                                <span class="inline-block h-8 w-8">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="h-6 w-6">
+                                    <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                </svg>
+                                </span>
+                                <span
+                                class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                                >Previous</span
+                                >
+                            </button>
+
+                            <!--Carousel controls - next item-->
+                            <button
+                                class="absolute bottom-0 right-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-black opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-black hover:no-underline hover:opacity-90 hover:outline-none focus:text-black focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
+                                type="button"
+                                data-te-target="#modalCarousel{{$key}}"
+                                data-te-slide="next"
+                            >
+                                <span class="inline-block h-8 w-8">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="h-6 w-6">
+                                    <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                </svg>
+                                </span>
+                                <span
+                                class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                                >Next</span
+                                >
+                            </button>
+
+                        </div> {{-- End Carousel --}}
+
+                    </div> {{-- End Modal Body --}}
+
+                </div>
+            </div>
+        </div> {{-- End Modal Window --}}
+
+    </div>    
+</div> {{-- End Modal --}}
