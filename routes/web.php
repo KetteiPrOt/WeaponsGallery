@@ -15,7 +15,7 @@ use App\Http\Controllers\WeaponController;
 |
 */
 Route::get('/', function () {
-    return redirect('weapons.root');
+    return redirect()->route('weapons.root');
 })->name('welcome');
 
 Route::get('/contact', function () {
