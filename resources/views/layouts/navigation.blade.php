@@ -57,22 +57,22 @@
                                     {{'HG'}}
                                 </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('contact')" class="md:hidden">
+                                <x-dropdown-link :href="route('contact')" class="lg:hidden">
                                     {{ __('Contacto') }}
                                 </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('about')" class="md:hidden">
+                                <x-dropdown-link :href="route('about')" class="lg:hidden">
                                     {{ __('Acerca de') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
                     </div>
 
-                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')" class="hidden md:inline-flex">
+                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')" class="hidden lg:inline-flex">
                         {{ __('Contacto') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('about')" :active="request()->routeIs('about')" class="hidden md:inline-flex">
+                    <x-nav-link :href="route('about')" :active="request()->routeIs('about')" class="hidden lg:inline-flex">
                         {{ __('Acerca de') }}
                     </x-nav-link>
 
