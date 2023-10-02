@@ -43,7 +43,7 @@
                 {{-- Fake Image --}}
                 <a
                     class="block px-2 rounded border border-b-0 border-neutral-200"
-                    href="{{route('weapons.create', $weapon->type->name)}}"
+                    href="{{route('weapons.create', $requestType->name)}}"
                 >
                     <!-- Button trigger -->
                     <button

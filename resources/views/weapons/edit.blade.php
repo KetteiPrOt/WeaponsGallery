@@ -1,138 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Weapon Edit</title>
-    
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="mx-3">
-    
-    @include('layouts.navigation')
+<x-app-layout>
 
-    <form action="{{route('weapons.update', $weapon->id)}}" method="post" enctype="multipart/form-data">
-        
-        @csrf
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Editar Arma') }}
+        </h2>
+    </x-slot>
 
-        @method('put')
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    {{-- Edit Weapon Form --}}
+                    <section>
+                        <header>
+                            <h2 class="text-lg font-medium text-gray-900">
+                                {{ __('Informacion del Arma') }}
+                            </h2>
+                    
+                            <p class="mt-1 text-sm text-gray-600">
+                                {{ __("Cambia la informacion actual del arma por una nueva:") }}
+                            </p>
+                        </header>
 
-        <h1 class="text-lg font-bold my-3">Actualizar Arma</h1>
+                        <form action="{{ route('weapons.update', $weapon->id) }}" method="post" enctype="multipart/form-data" class="mt-6 space-y-6">
+                            @csrf
 
-        {{-- Input Name --}}
-        <p>Nombre</p>
-        <input
-            type="text"
-            name="name"
-            value="{{old('name', $weapon->name)}}"
-            class="w-48 mb-3"
-        >
-        @error('name')
-            <p
-                class="text-red-400"
-            >{{$message}}</p>
-        @enderror
+                            @method('put')
 
-        {{-- Input Description --}}
-        <p>Descripcion</p>
-        <textarea
-            name="description"
-            class="w-48 mb-3"
-        >{{old('description', $weapon->description)}}</textarea>
+                            {{-- Name --}}
+                            <div>
+                                <x-input-label for="name" :value="__('Nombre')" />
+                                <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $weapon->name)" minlength="5" maxlength="40" required autofocus />
+                                <x-input-error class="mt-2" :messages="$errors->get('name')" />
+                            </div>
 
-        @error('description')
-            <p
-                class="text-red-400"
-            >{{$message}}</p>
-        @enderror
+                            {{-- Description --}}
+                            <div>
+                                <x-input-label for="description" :value="__('Descripción')" />
+                                <x-textarea-input
+                                    id="description" name="description" required
+                                    minlength="20" maxlength="500" class="mt-1 block w-full"
+                                >
+                                    {{old('description', $weapon->description)}}
+                                </x-textarea-input>
+                                <x-input-error class="mt-2" :messages="$errors->get('description')" />
+                            </div>
 
-        {{-- Curiosities --}}
-        <p>Curiosidades</p>
-        @for($i = 0; $i < 3; $i++)
-            <input
-                type="text"
-                name="curiosities[]"
-                value="{{old("curiosities.$i", $weapon->curiosities[$i]->text)}}"
-                class="w-48 mb-3"
-                placeholder="Curiosidad {{$i + 1}}"
-            > <br>
-        @endfor
+                            {{-- Curiosities --}}
+                            <div>
+                                <x-input-label :value="__('Curiosidades')" />
+                                @for($i = 0; $i < 3; $i++)
+                                    <x-text-input id="curiosity_{{$i}}" name="curiosities[]" type="text" class="mt-1 block w-full" :value="old('curiosities.' . $i, $weapon->curiosities[$i]->text)" placeholder="Curiosidad {{$i + 1}}" minlength="10" maxlength="100" required autofocus />
+                                @endfor
+                                <x-input-error class="mt-2" :messages="$errors->get('curiosities.*')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('curiosities')" />
+                            </div>
 
-        @error("curiosities.*")
-            <p
-                class="text-red-400"
-            >{{$message}}</p>
-        @enderror
+                            {{-- Main Image --}}
+                            <div>
+                                <x-input-label :value="__('Imagen Principal')" />
+                                <x-file-input name="main_image" />
+                                <x-input-error class="mt-2" :messages="$errors->get('main_image')" />
+                            </div>
 
-        @error("curiosities")
-            <p
-                class="text-red-400"
-            >{{$message}}</p>
-        @enderror
+                            {{-- Secondary Images --}}
+                            <div>
+                                <x-input-label :value="__('Imagenes Secundarias')" />
+                                <x-file-input name="secondary_images[]" class="mt-2" />
+                                <x-file-input name="secondary_images[]" class="mt-2" />
+                                <x-file-input name="secondary_images[]" class="mt-2" />
+                                <x-input-error :messages="$errors->get('secondary_images.*')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('secondary_images')" class="mt-2" />
+                            </div>
 
-        {{-- Imagen Principal --}}
-        <p>Imagen Principal</p>
-        <input
-            type="file"
-            name="main_image"
-            class="mb-3"
-        > <br>
+                            {{-- Weapon Type --}}
+                            <div class="hidden">
+                                <x-text-input name="type" :value="$weapon->type->name" />
+                            </div>
 
-        @error('main_image')
-            <p
-                class="text-red-400"
-            >{{$message}}</p>
-        @enderror
+                            {{-- Save Button --}}
+                            <div class="flex justify-center items-center gap-4 sm:justify-start">
+                                <x-primary-button>{{ __('Guardar') }}</x-primary-button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <img class="w-32 h-32 inline-block" src="{{asset($weapon->mainImage->image_url)}}">
-
-        {{-- Imagenes Secundarias --}}
-        <p>Imagenes Secundarias</p>
-        @foreach($weapon->secondaryImages as $key => $image)
-            <input
-                type="file"
-                name="secondary_images[{{$key}}]"
-                class="mb-3"
-            > <br>
-
-            <img
-                class="w-32 h-32 mb-3 inline-block"
-                src="{{asset($image->image_url)}}"
-            > <br>
-        @endforeach
-
-        @error("secondary_images")
-            <p
-                class="text-red-400"
-            >{{$message}}</p>
-        @enderror
-
-        @error("secondary_images.*")
-            <p
-                class="text-red-400"
-            >{{$message}}</p>
-        @enderror
-
-        {{-- Input Type --}}
-        <p>Tipo de arma</p>
-        <p>
-            Tipo: {{strtoupper($weapon->type->name)}}
-        </p>
-        <input
-            name="type"
-            value="{{$weapon->type->name}}"
-            hidden
-        >
-        @error('type')
-            <p
-                class="text-red-400"
-            >{{$message}}</p>
-        @enderror
-        
-
-        <button class="p-2 border rounded border-gray-400 mt-3" type="submit">Enviar</button>
-    </form>
-</body>
-</html>
+</x-app-layout>

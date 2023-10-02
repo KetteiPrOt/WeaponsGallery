@@ -10,7 +10,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('welcome') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current" />
+                        <x-application-logo class="text-white block h-9 w-auto fill-current" />
                     </a>
                 </div>
 
@@ -61,7 +61,7 @@
                                     {{ __('Contacto') }}
                                 </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('about')" class="lg:hidden">
+                                <x-dropdown-link :href="__('https://github.com/KetteiPrOt/WeaponsGallery')" class="lg:hidden">
                                     {{ __('Acerca de') }}
                                 </x-dropdown-link>
                             </x-slot>
@@ -72,7 +72,7 @@
                         {{ __('Contacto') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('about')" :active="request()->routeIs('about')" class="hidden lg:inline-flex">
+                    <x-nav-link :href="__('https://github.com/KetteiPrOt/WeaponsGallery')" class="hidden lg:inline-flex">
                         {{ __('Acerca de') }}
                     </x-nav-link>
 
@@ -167,7 +167,7 @@
                 {{ __('Contacto') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
+            <x-responsive-nav-link :href="__('https://github.com/KetteiPrOt/WeaponsGallery')" :active="request()->routeIs('about')">
                 {{ __('Acerca de') }}
             </x-responsive-nav-link>
 

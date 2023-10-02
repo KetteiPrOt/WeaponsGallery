@@ -29,7 +29,7 @@
         <x-footer-link :route="route('contact')">
             Contacto
         </x-footer-link>
-        <x-footer-link :route="route('about')">
+        <x-footer-link :route="__('https://github.com/KetteiPrOt/WeaponsGallery')">
             Acerca de
         </x-footer-link>
     

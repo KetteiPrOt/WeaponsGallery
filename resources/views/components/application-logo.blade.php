@@ -1,1 +1,3 @@
-<span class="text-white text-3xl">Armas</span>
+<span
+    {!! $attributes->merge(['class' => 'text-3xl']) !!}
+>Armas</span>
