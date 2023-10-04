@@ -8,6 +8,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ $title }}</title>
+        <link rel="icon" href="{{asset('storage/icons/icon.png')}}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
