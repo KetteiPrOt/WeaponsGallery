@@ -3,7 +3,6 @@
     id="weaponsCarousel"
     class="hidden sm:block relative"
     data-te-carousel-init
-    data-te-ride="carousel"
 >
 
     <!--Carousel indicators-->

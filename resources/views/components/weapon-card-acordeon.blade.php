@@ -6,7 +6,7 @@
         <h2 class="mb-0" id="heading{{$key}}">
             <button
                 class="
-                    z-0
+                    z-50
                     group relative flex w-full items-center 
                     rounded-t-[15px] border-0 bg-white px-5 py-4 
                     text-left text-base text-neutral-800 
@@ -56,7 +56,7 @@
         >
             <div class="px-5 py-4 text-justify">
                 {{-- Edit/Delete Weapon --}}
-                <p>
+                <div class="flex flex-wrap justify-between mb-2">
                     @auth
                         {{-- Edit Weapon --}}
                         <a href="{{route('weapons.edit', $weapon->id)}}" class="text-blue-400">
@@ -90,36 +90,63 @@
                             </svg>
                         </a>
 
-                        <br>
-
-                        {{-- Delete Weapon --}}
-                        <form action="{{route('weapons.destroy', $weapon->id)}}" method="POST">
-
-                            @csrf
-
-                            @method('delete')
-                            
-                            {{-- Button --}}
-                            <button class="text-red-400" type="submit">
-                                {{-- Label --}}
-                                Eliminar Arma
-                                {{-- Icon --}}
-                                <svg
-                                    class="w-5 h-5 inline align-top"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
+                        {{-- Delete Weapon Button --}}
+                        <button
+                            class="z-0 text-red-400"
+                            x-data=""
+                            x-on:click.prevent="$dispatch('open-modal', 'confirm-weapon-deletion')"
+                        >
+                            {{-- Label --}}
+                            Eliminar Arma
+                            {{-- Icon --}}
+                            <svg
+                                class="w-5 h-5 inline align-top"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M10 11V17" stroke="#CB3234" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 11V17" stroke="#CB3234" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4 7H20" stroke="#CB3234" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6 7H12H18V18C18 19.6569 16.6569 21 15 21H9C7.34315 21 6 19.6569 6 18V7Z" stroke="#CB3234" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#CB3234" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        {{-- Delete Weapon Modal --}}
+                        <x-modal name="confirm-weapon-deletion">
+                            <div class="flex justify-center items-center w-full h-full bg-transparent">
+                                <form 
+                                    class="p-6 m-auto" 
+                                    action="{{route('weapons.destroy', $weapon->id)}}" 
+                                    method="POST"
                                 >
-                                    <path d="M10 11V17" stroke="#CB3234" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M14 11V17" stroke="#CB3234" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M4 7H20" stroke="#CB3234" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M6 7H12H18V18C18 19.6569 16.6569 21 15 21H9C7.34315 21 6 19.6569 6 18V7Z" stroke="#CB3234" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#CB3234" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                        </form>
+
+                                    @csrf
+
+                                    @method('delete')
+
+                                    <h2 class="text-lg font-medium text-gray-900">
+                                        {{ __('Seguro que deseas eliminar el arma?') }}
+                                    </h2>
+                        
+                                    <p class="mt-1 text-sm text-gray-600">
+                                        {{ __('Una vez la elimines no podras recuperar ni la informacion ni las imagenes.') }}
+                                    </p>
+
+                                    <div class="mt-6 flex justify-end">
+                                        <x-secondary-button x-on:click="$dispatch('close')">
+                                            {{ __('Cancelar') }}
+                                        </x-secondary-button>
+                        
+                                        <x-danger-button class="ml-3">
+                                            {{ __('Eliminar Arma') }}
+                                        </x-danger-button>
+                                    </div>
+                                </form>
+                            </div>
+                        </x-modal>
                     @endauth
-                </p>
+                </div>
                 
                 {{-- Weapon Description --}}
                 <p class="break-words">
@@ -129,7 +156,7 @@
                 {{-- Weapon Curiosities --}}
                 <ul class="mt-3 w-full">
                     @foreach($weapon->curiosities as $curiosity)
-                        <li class="py-3 border-t border-neutral-200 break-words text-red-400">
+                        <li class="py-3 border-t border-neutral-200 break-words">
                             {{$curiosity->text}}
                         </li>
                     @endforeach
