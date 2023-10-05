@@ -57,6 +57,7 @@
                             {{-- Main Image --}}
                             <div>
                                 <x-input-label :value="__('Imagen Principal')" />
+                                <p class="text-yellow-500">Asegurate que sea de la misma dimension que las otras imagenes.</p>
                                 <x-file-input name="main_image" />
                                 <x-input-error class="mt-2" :messages="$errors->get('main_image')" />
                             </div>
@@ -64,6 +65,7 @@
                             {{-- Secondary Images --}}
                             <div>
                                 <x-input-label :value="__('Imagenes Secundarias')" />
+                                <p class="text-yellow-500">Asegurate que sean de la misma dimension que las otras imagenes.</p>
                                 <x-file-input name="secondary_images[]" class="mt-2" />
                                 <x-file-input name="secondary_images[]" class="mt-2" />
                                 <x-file-input name="secondary_images[]" class="mt-2" />

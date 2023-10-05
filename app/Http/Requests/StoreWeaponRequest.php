@@ -30,12 +30,7 @@ class StoreWeaponRequest extends FormRequest
         $textRegex = '/^(' . implode('|', $textChars) . ')+$/';
         // $textRegex = "/^((\w)|(-)|( )|(,)|(\.)|(\!)|(\?))+$/";
 
-        // Rules for images
-        $imageRules = ['required', 'image', 'max:5500', 'dimensions:ratio=3/1'];
-
         // All rules array
-        $rules = [];
-
         $rules['name'] = ['required', 'string', 'min:5', 'max:40', "regex:$nameRegex"];
         
         $rules['description'] = ['required', 'string', 'min:20', 'max:500', "regex:$textRegex"];
@@ -43,10 +38,10 @@ class StoreWeaponRequest extends FormRequest
         $rules["curiosities"] = "required|array:0,1,2|min:3|max:3";
         $rules["curiosities.*"] = ['required', 'string', 'min:10', 'max:100', "regex:$textRegex"];
 
-        $rules['main_image'] = $imageRules;
+        $rules['main_image'] = ['required', 'image', 'max:5500'];
 
         $rules["secondary_images"] = "required|array:0,1,2|min:3|max:3";
-        $rules["secondary_images.*"] = $imageRules;
+        $rules["secondary_images.*"] = ['required', 'image', 'max:5500'];
 
         $rules['type'] = ['required', 'string', 'min:2', 'max:20', 'exists:App\Models\Type,name'];
 
