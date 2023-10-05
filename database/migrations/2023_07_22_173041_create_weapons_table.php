@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('weapons', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 40);
-            $table->string('description', 500);
+            $table->string('name', 25);
+            $table->string('description', 300);
 
             $table->foreignId('type_id')->constrained(
                 table: 'types',

@@ -31,12 +31,12 @@ class StoreWeaponRequest extends FormRequest
         // $textRegex = "/^((\w)|(-)|( )|(,)|(\.)|(\!)|(\?))+$/";
 
         // All rules array
-        $rules['name'] = ['required', 'string', 'min:5', 'max:40', "regex:$nameRegex"];
+        $rules['name'] = ['required', 'string', 'min:2', 'max:25', "regex:$nameRegex"];
         
-        $rules['description'] = ['required', 'string', 'min:20', 'max:500', "regex:$textRegex"];
+        $rules['description'] = ['required', 'string', 'min:100', 'max:300', "regex:$textRegex"];
 
         $rules["curiosities"] = "required|array:0,1,2|min:3|max:3";
-        $rules["curiosities.*"] = ['required', 'string', 'min:10', 'max:100', "regex:$textRegex"];
+        $rules["curiosities.*"] = ['required', 'string', 'min:20', 'max:60', "regex:$textRegex"];
 
         $rules['main_image'] = ['required', 'image', 'max:5500'];
 

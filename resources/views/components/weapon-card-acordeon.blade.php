@@ -122,14 +122,14 @@
                 </p>
                 
                 {{-- Weapon Description --}}
-                <p>
+                <p class="break-words">
                     {{$weapon->description}}
                 </p>
 
                 {{-- Weapon Curiosities --}}
-                <ul class="mt-3">
+                <ul class="mt-3 w-full">
                     @foreach($weapon->curiosities as $curiosity)
-                        <li class="py-3 border-t border-neutral-200">
+                        <li class="py-3 border-t border-neutral-200 break-words text-red-400">
                             {{$curiosity->text}}
                         </li>
                     @endforeach

@@ -30,7 +30,7 @@
                             {{-- Name --}}
                             <div>
                                 <x-input-label for="name" :value="__('Nombre')" />
-                                <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $weapon->name)" minlength="5" maxlength="40" required autofocus />
+                                <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $weapon->name)" minlength="2" maxlength="25" required autofocus />
                                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
                             </div>
 
@@ -39,7 +39,7 @@
                                 <x-input-label for="description" :value="__('Descripción')" />
                                 <x-textarea-input
                                     id="description" name="description" required
-                                    minlength="20" maxlength="500" class="mt-1 block w-full"
+                                    minlength="100" maxlength="300" class="mt-1 block w-full"
                                 >
                                     {{old('description', $weapon->description)}}
                                 </x-textarea-input>
@@ -50,7 +50,7 @@
                             <div>
                                 <x-input-label :value="__('Curiosidades')" />
                                 @for($i = 0; $i < 3; $i++)
-                                    <x-text-input id="curiosity_{{$i}}" name="curiosities[]" type="text" class="mt-1 block w-full" :value="old('curiosities.' . $i, $weapon->curiosities[$i]->text)" placeholder="Curiosidad {{$i + 1}}" minlength="10" maxlength="100" required autofocus />
+                                    <x-text-input id="curiosity_{{$i}}" name="curiosities[]" type="text" class="mt-1 block w-full" :value="old('curiosities.' . $i, $weapon->curiosities[$i]->text)" placeholder="Curiosidad {{$i + 1}}" minlength="20" maxlength="60" required autofocus />
                                 @endfor
                                 <x-input-error class="mt-2" :messages="$errors->get('curiosities.*')" />
                                 <x-input-error class="mt-2" :messages="$errors->get('curiosities')" />
@@ -59,6 +59,7 @@
                             {{-- Main Image --}}
                             <div>
                                 <x-input-label :value="__('Imagen Principal')" />
+                                <p class="text-yellow-500">Asegurate que sea de la misma dimension que las otras imagenes.</p>
                                 <x-file-input name="main_image" />
                                 <x-input-error class="mt-2" :messages="$errors->get('main_image')" />
                             </div>
@@ -66,6 +67,7 @@
                             {{-- Secondary Images --}}
                             <div>
                                 <x-input-label :value="__('Imagenes Secundarias')" />
+                                <p class="text-yellow-500">Asegurate que sean de la misma dimension que las otras imagenes.</p>
                                 <x-file-input name="secondary_images[]" class="mt-2" />
                                 <x-file-input name="secondary_images[]" class="mt-2" />
                                 <x-file-input name="secondary_images[]" class="mt-2" />
