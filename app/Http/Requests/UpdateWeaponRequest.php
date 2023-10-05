@@ -26,9 +26,11 @@ class UpdateWeaponRequest extends FormRequest
         $nameRegex = "/^((\w)|(-)|( ))+$/";
 
         // Characters allowed in descriptions
-        $textChars = ['(\\w)', '(-)', '( )', '(,)', '(\\.)', '(\\!)', '(\\?)', '(\\*)', '(\\))', '(\\()'];
-        $textRegex = '/^(' . implode('|', $textChars) . ')+$/';
-        // $textRegex = "/^((\w)|(-)|( )|(,)|(\.)|(\!)|(\?))+$/";
+        // Characters allowed in descriptions
+        // $textChars = ['((\\w)', '(-)', '( )', '(,)', '(\\.)', '(\\!)', '(\\?)', '(\\*)', '(\\))', '(\\()', '([äÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ])', '(\\:))'];
+        // $textRegex = '/^(' . implode('|', $textChars) . ')+$/';
+        // $textRegex = "/^((\w)|(-)|( )|(,)|(\.)|(\!)|(\?))| ... +$/";
+        $textRegex = '/^(.)+$/';
 
         // All rules array
         $rules['name'] = ['required', 'string', 'min:2', 'max:25', "regex:$nameRegex"];
