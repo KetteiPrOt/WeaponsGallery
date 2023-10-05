@@ -6,7 +6,6 @@
         <h2 class="mb-0" id="heading{{$key}}">
             <button
                 class="
-                    z-50
                     group relative flex w-full items-center 
                     rounded-t-[15px] border-0 bg-white px-5 py-4 
                     text-left text-base text-neutral-800 
@@ -94,7 +93,7 @@
                         <button
                             class="z-0 text-red-400"
                             x-data=""
-                            x-on:click.prevent="$dispatch('open-modal', 'confirm-weapon-deletion')"
+                            x-on:click.prevent="$dispatch('open-modal', 'confirm-weapon-{{$key}}-deletion')"
                         >
                             {{-- Label --}}
                             Eliminar Arma
@@ -113,7 +112,7 @@
                             </svg>
                         </button>
                         {{-- Delete Weapon Modal --}}
-                        <x-modal name="confirm-weapon-deletion">
+                        <x-modal name="confirm-weapon-{{$key}}-deletion">
                             <div class="flex justify-center items-center w-full h-full bg-transparent">
                                 <form 
                                     class="p-6 m-auto" 
