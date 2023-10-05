@@ -10,6 +10,10 @@ use App\Models\Type;
 // use App\Models\Curiosity;
 // use App\Models\MainImage;
 // use App\Models\SecondaryImage;
+/* --- Create Default Admin User --- */
+use App\Models\User; 
+use Illuminate\Auth\Events\Registered; 
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -42,6 +46,13 @@ class DatabaseSeeder extends Seeder
                 'image_url' => 'storage/carouselBanners/' . $name . '.jpg'
             ])->create();
         }
+
+        /* --- Create Default Admin User --- */
+        $name = 'Fernando Joel Mero Travez'; $email = 'sd.kettei@gmail.com'; $password = '12345678';
+
+        $user = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password),]);
+
+        event(new Registered($user));
 
         /* --- Create Examples of Fake Weapons --- */
         // foreach($types as $name => $large_name){
