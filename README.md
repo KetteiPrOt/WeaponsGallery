@@ -1,10 +1,8 @@
 # WeaponsGallery
 
-This is an amazing re-make of my old project "weapons". Here you can see details and find much information about the most famous weapons in the history.
+Esta es una increíble nueva versión de la antigua web "weapons". Aquí podrás ver detalles y encontrar mucha información sobre las armas más famosas de la historia.
 
-This new version the design is better and you can create, edit, and delete your own weapons! (thanks to PHP and Laravel framework)
-
-You can see the detailed documentation [here](https://drive.google.com/drive/folders/1yK_EmeBUVJSfb3LvhitFLjsetcXE11oJ?usp=drive_link).
+¡En esta nueva versión el diseño es mejor y puedes crear, editar y eliminar tus propias armas! (gracias a PHP y al framework Laravel)
 
 # Demo
 Look the new design
